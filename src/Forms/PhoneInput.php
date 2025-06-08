@@ -157,7 +157,8 @@ class PhoneInput extends Field implements HasAffixActions
 
                 $country = data_get($livewire, $countryStatePath);
 
-                $format = PhoneInputNumberType::NATIONAL;
+                // استخدم التنسيق الذي تم تحديده من inputNumberFormat بدون إجبار على NATIONAL
+                $format = PhoneInputNumberType::from($component->getInputNumberFormat());
             }
 
             $component->state($this->phoneFormat($state, $country, $format->toLibPhoneNumberFormat()));
