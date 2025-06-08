@@ -1,6 +1,6 @@
 <?php
 
-namespace Ysfkaya\FilamentPhoneInput\Forms;
+namespace FreestyleRepo\FilamentPhoneInput\Forms;
 
 use Closure;
 use Filament\Forms\Components\Concerns\HasAffixes;
@@ -13,7 +13,7 @@ use Filament\Support\RawJs;
 use Illuminate\Support\Facades\Http;
 use libphonenumber\PhoneNumberType;
 use Propaganistas\LaravelPhone\Rules\Phone as PhoneRule;
-use Ysfkaya\FilamentPhoneInput\PhoneInputNumberType;
+use FreestyleRepo\FilamentPhoneInput\PhoneInputNumberType;
 
 class PhoneInput extends Field implements HasAffixActions
 {

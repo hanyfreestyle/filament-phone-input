@@ -1,6 +1,6 @@
 <?php
 
-namespace Ysfkaya\FilamentPhoneInput\Tables;
+namespace FreestyleRepo\FilamentPhoneInput\Tables;
 
 use Closure;
 use Filament\Tables\Columns\TextColumn;
@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use libphonenumber\PhoneNumberFormat;
 use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
-use Ysfkaya\FilamentPhoneInput\PhoneInputNumberType;
+use FreestyleRepo\FilamentPhoneInput\PhoneInputNumberType;
 
 class PhoneColumn extends TextColumn
 {

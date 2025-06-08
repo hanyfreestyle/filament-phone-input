@@ -1,5 +1,5 @@
 {
-    "name": "ysfkaya/filament-phone-input",
+    "name": "hanyfreestyle/filament-phone-input",
     "description": "A phone input component for Laravel Filament",
     "keywords": [
         "laravel",
@@ -7,7 +7,7 @@
         "phone-input",
         "intl-tel-input"
     ],
-    "homepage": "https://github.com/ysfkaya/filament-phone-input",
+    "homepage": "https://github.com/hanyfreestyle/filament-phone-input",
     "license": "MIT",
     "require": {
         "php": "^8.1",
@@ -30,18 +30,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Ysfkaya\\FilamentPhoneInput\\": "src/"
+            "FreestyleRepo\\FilamentPhoneInput\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Ysfkaya\\FilamentPhoneInput\\Tests\\": "tests/"
+            "FreestyleRepo\\FilamentPhoneInput\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Ysfkaya\\FilamentPhoneInput\\FilamentPhoneInputServiceProvider"
+                "FreestyleRepo\\FilamentPhoneInput\\FilamentPhoneInputServiceProvider"
             ]
         }
     },

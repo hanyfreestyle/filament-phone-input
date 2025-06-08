@@ -4,7 +4,6 @@
     <list default="true" id="af8ca9f3-c167-4f31-ad83-582c248f9352" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/filament-phone-input.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/filament-phone-input.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/FilamentPhoneInputServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/FilamentPhoneInputServiceProvider.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Forms/PhoneInput.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Forms/PhoneInput.php" afterDir="false" />
@@ -55,7 +54,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1749372154635</updated>
-      <workItem from="1749372156327" duration="974000" />
+      <workItem from="1749372156327" duration="1347000" />
     </task>
     <servers />
   </component>

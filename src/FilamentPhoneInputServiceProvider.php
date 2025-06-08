@@ -1,6 +1,6 @@
 <?php
 
-namespace Ysfkaya\FilamentPhoneInput;
+namespace FreestyleRepo\FilamentPhoneInput;
 
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Css;
