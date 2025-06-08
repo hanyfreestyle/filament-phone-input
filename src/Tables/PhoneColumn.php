@@ -17,25 +17,17 @@ class PhoneColumn extends TextColumn {
 
     protected function setUp(): void {
         parent::setUp();
-
         $this->displayFormat(PhoneInputNumberType::NATIONAL);
     }
 
     public function showFlag(bool|Closure $condition = true): static {
         $this->showFlag = $condition;
-
         return $this;
     }
 
-    protected function countryCodeToEmoji(string $countryCode): string {
-        return implode('', array_map(function ($char) {
-            return mb_chr(0x1F1E6 - 65 + ord($char), 'UTF-8');
-        }, str_split(strtoupper($countryCode))));
-    }
 
     public function countryColumn(string|Closure $column): static {
         $this->countryColumn = $column;
-
         return $this;
     }
 
@@ -63,8 +55,19 @@ class PhoneColumn extends TextColumn {
 
                 // ✅ إضافة العلم
                 $flag = '';
-                if ($this->evaluate($this->showFlag) && is_string($country) && strlen($country) === 2) {
-                    $flag = $this->countryCodeToEmoji($country) . ' ';
+                $countryCode = strtolower($country ?? '');
+
+                if (
+                    $this->evaluate($this->showFlag) &&
+                    is_string($countryCode) &&
+                    strlen($countryCode) === 2
+                ) {
+                    $flagPath = public_path("assets/flag/120/{$countryCode}.webp");
+                    $flagUrl = asset("assets/flag/120/{$countryCode}.webp");
+
+                    if (file_exists($flagPath)) {
+                        $flag = "<img src='{$flagUrl}' style='width:20px;height:auto;display:inline-block;margin-inline-end:6px;vertical-align:middle'>";
+                    }
                 }
 
                 if ($formatValue === (enum_exists(PhoneNumberFormat::class) ? PhoneNumberFormat::RFC3966->value : PhoneNumberFormat::RFC3966)) {
@@ -82,10 +85,10 @@ class PhoneColumn extends TextColumn {
 
                 } else {
                     $html = <<<HTML
-                    <span dir="ltr">
-                        $flag$formatted
-                    </span>
-                HTML;
+    <span dir="ltr" style="font-family: 'tohama', monospace; font-weight: bold!important; font-size: 15px!important;">
+        {$flag}{$formatted}
+    </span>
+HTML;
                 }
 
                 return new HtmlString($html);
