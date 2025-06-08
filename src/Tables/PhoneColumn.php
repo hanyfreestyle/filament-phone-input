@@ -11,50 +11,63 @@ use libphonenumber\PhoneNumberFormat;
 use Propaganistas\LaravelPhone\Exceptions\NumberParseException;
 use FreestyleRepo\FilamentPhoneInput\PhoneInputNumberType;
 
-class PhoneColumn extends TextColumn
-{
-    protected string | Closure | null $countryColumn = null;
+class PhoneColumn extends TextColumn {
+    protected string|Closure|null $countryColumn = null;
+    protected bool|Closure $showFlag = false;
 
-    protected function setUp(): void
-    {
+    protected function setUp(): void {
         parent::setUp();
 
         $this->displayFormat(PhoneInputNumberType::NATIONAL);
     }
 
-    public function countryColumn(string | Closure $column): static
-    {
+    public function showFlag(bool|Closure $condition = true): static {
+        $this->showFlag = $condition;
+
+        return $this;
+    }
+
+    protected function countryCodeToEmoji(string $countryCode): string {
+        return implode('', array_map(function ($char) {
+            return mb_chr(0x1F1E6 - 65 + ord($char), 'UTF-8');
+        }, str_split(strtoupper($countryCode))));
+    }
+
+    public function countryColumn(string|Closure $column): static {
         $this->countryColumn = $column;
 
         return $this;
     }
 
-    public function getCountryColumn()
-    {
+    public function getCountryColumn() {
         return $this->evaluate($this->countryColumn);
     }
 
-    public function displayFormat(PhoneInputNumberType $format)
-    {
+    public function displayFormat(PhoneInputNumberType $format) {
         return $this->formatStateUsing(function (PhoneColumn $column, $state) use ($format) {
             try {
                 $countryColumn = $this->getCountryColumn();
-
                 $country = [];
 
                 if ($countryColumn) {
                     $country = $column->getCountryState();
                 }
 
-                $format = $format->toLibPhoneNumberFormat();
+                $formatValue = $format->toLibPhoneNumberFormat();
 
                 $formatted = phone(
                     number: $state,
                     country: $country,
-                    format: $format
+                    format: $formatValue
                 );
 
-                if ($format === (enum_exists(PhoneNumberFormat::class) ? PhoneNumberFormat::RFC3966->value : PhoneNumberFormat::RFC3966)) {
+                // ✅ إضافة العلم
+                $flag = '';
+                if ($this->evaluate($this->showFlag) && is_string($country) && strlen($country) === 2) {
+                    $flag = $this->countryCodeToEmoji($country) . ' ';
+                }
+
+                if ($formatValue === (enum_exists(PhoneNumberFormat::class) ? PhoneNumberFormat::RFC3966->value : PhoneNumberFormat::RFC3966)) {
                     $national = phone(
                         number: $state,
                         country: $country,
@@ -62,35 +75,34 @@ class PhoneColumn extends TextColumn
                     );
 
                     $html = <<<HTML
-                        <a href="$formatted" dir="ltr">
-                            $national
-                        </a>
-                    HTML;
+                    <a href="$formatted" dir="ltr">
+                        $flag$national
+                    </a>
+                HTML;
 
                 } else {
                     $html = <<<HTML
-                        <span dir="ltr">
-                            $formatted
-                        </span>
-                    HTML;
+                    <span dir="ltr">
+                        $flag$formatted
+                    </span>
+                HTML;
                 }
 
                 return new HtmlString($html);
             } catch (NumberParseException $e) {
                 return $state;
             }
-        })->when($format === PhoneInputNumberType::RFC3966, fn (PhoneColumn $column) => $column->disabledClick());
+        })->when($format === PhoneInputNumberType::RFC3966, fn(PhoneColumn $column) => $column->disabledClick());
     }
 
-    public function getCountryState()
-    {
-        if (! $this->getRecord()) {
+    public function getCountryState() {
+        if (!$this->getRecord()) {
             return null;
         }
 
         $column = $this->getCountryColumn();
 
-        if (! $column) {
+        if (!$column) {
             return null;
         }
 
@@ -102,26 +114,26 @@ class PhoneColumn extends TextColumn
             return $state;
         }
 
-        if (! $this->hasRelationship($record)) {
+        if (!$this->hasRelationship($record)) {
             return null;
         }
 
         $relationship = $this->getRelationship($record);
 
-        if (! $relationship) {
+        if (!$relationship) {
             return null;
         }
 
         $relationshipAttribute = $this->getRelationshipAttribute($column);
 
         $state = collect($this->getRelationshipResults($record))
-            ->filter(fn (Model $record): bool => array_key_exists($relationshipAttribute, $record->attributesToArray()))
+            ->filter(fn(Model $record): bool => array_key_exists($relationshipAttribute, $record->attributesToArray()))
             ->pluck($relationshipAttribute)
-            ->filter(fn ($state): bool => filled($state))
-            ->when($this->isDistinctList(), fn (Collection $state) => $state->unique())
+            ->filter(fn($state): bool => filled($state))
+            ->when($this->isDistinctList(), fn(Collection $state) => $state->unique())
             ->values();
 
-        if (! $state->count()) {
+        if (!$state->count()) {
             return null;
         }
 
