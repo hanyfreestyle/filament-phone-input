@@ -1,0 +1,21 @@
+{
+    "scripts": {
+        "js:build": "node bin/build.js",
+        "js:dev": "node bin/build.js --dev",
+        "dev": "mix",
+        "watch": "mix watch",
+        "prod": "mix --production && npm run js:build"
+    },
+    "type": "module",
+    "dependencies": {
+        "intl-tel-input": "^25.2.0"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.4",
+        "@tailwindcss/typography": "^0.5.9",
+        "esbuild": "^0.19.2",
+        "laravel-mix": "^6.0.43",
+        "tailwindcss": "^3.3.3"
+    },
+    "private": true
+}

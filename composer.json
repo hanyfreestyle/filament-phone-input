@@ -1,0 +1,73 @@
+{
+    "name": "ysfkaya/filament-phone-input",
+    "description": "A phone input component for Laravel Filament",
+    "keywords": [
+        "laravel",
+        "filament",
+        "phone-input",
+        "intl-tel-input"
+    ],
+    "homepage": "https://github.com/ysfkaya/filament-phone-input",
+    "license": "MIT",
+    "require": {
+        "php": "^8.1",
+        "filament/filament": "^3.0",
+        "propaganistas/laravel-phone": "^5.0",
+        "spatie/laravel-package-tools": "^1.16"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^7.9",
+        "nunomaduro/larastan": "^2.0.1",
+        "orchestra/testbench-dusk": "^8.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-arch": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0",
+        "pestphp/pest-plugin-livewire": "^2.1",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ysfkaya\\FilamentPhoneInput\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ysfkaya\\FilamentPhoneInput\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ysfkaya\\FilamentPhoneInput\\FilamentPhoneInputServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse --memory-limit=512M",
+        "test": "vendor/bin/pest --testsuite=Unit",
+        "test-browser": "vendor/bin/phpunit --testsuite=Browser --bootstrap=tests/Browser/bootstrap.php",
+        "format": "vendor/bin/pint",
+        "checks": [
+            "@analyse",
+            "@test",
+            "@test-browser",
+            "@format"
+        ],
+        "prepare-test":[
+            "vendor/bin/dusk-updater detect",
+            "php vendor/orchestra/testbench-dusk/create-sqlite-db"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
