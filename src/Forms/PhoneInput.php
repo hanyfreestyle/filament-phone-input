@@ -236,6 +236,32 @@ class PhoneInput extends Field implements HasAffixActions
         return $this->rule($rule);
     }
 
+    public function validateForType(string|array|Closure $country = 'AUTO', int|array|PhoneNumberType|Closure|null $type = null, bool $lenient = false,): static {
+        // ❌ ماينفعش نخزن Closure في validatedCountry لأنها مصممة تستقبل string|array بس
+        $this->validatedCountry = $country instanceof Closure ? 'AUTO' : $country;
+
+        // نستخدم rule داخل Closure عشان نحصل على الدولة والنوع بشكل ديناميكي من state
+        $this->rule(function (callable $get) use ($country, $type, $lenient) {
+            $resolvedCountry = $country instanceof Closure ? $country($get) : $country;
+
+            $resolvedType = $type instanceof Closure ? $type($get) : $type;
+            $resolvedType = $resolvedType instanceof PhoneNumberType
+                ? (enum_exists(PhoneNumberType::class) ? $resolvedType->value : $resolvedType)
+                : $resolvedType;
+
+            $rule = (new PhoneRule)
+                ->country($resolvedCountry)
+                ->type($resolvedType);
+
+            if ($lenient) {
+                $rule->lenient();
+            }
+
+            return $rule;
+        });
+
+        return $this;
+    }
     /**
      * Default country code uses when parsing the phone number to avoid exceptions.
      *
